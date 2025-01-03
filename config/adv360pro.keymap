@@ -11,7 +11,6 @@
 #define OS_UNICODE_TRAIL &macro_tap &kp SPACE     // Linux
 
 #define UC_MACRO(name, unicode_bindings) \
-        macros { \
             name: name { \
                 compatible = "zmk,behavior-macro"; \
                 label = ZMK_HELPER_STRINGIFY(UC_MACRO_ ## name); \
@@ -19,37 +18,32 @@
                 tap-ms = <0>; \
                 #binding-cells = <0>; \
                 bindings = <OS_UNICODE_LEAD>, <&macro_tap unicode_bindings>, <OS_UNICODE_TRAIL>; \
-            }; \
-        };
+            };
 
 #define UC_MODMORPH(name, uc_binding, shifted_uc_binding) \
-        behaviors { \
             name: name { \
                 compatible = "zmk,behavior-mod-morph"; \
                 label = ZMK_HELPER_STRINGIFY(UC_MORPH_ ## name); \
                 #binding-cells = <0>; \
                 bindings = <uc_binding>, <shifted_uc_binding>; \
                 mods = <(MOD_LSFT|MOD_RSFT)>; \
-            }; \
-        };
+            };
 
-#define ZMK_UNICODE_SINGLE(name, L0, L1, L2, L3) \
-    UC_MACRO(name ## _lower, &kp L0 &kp L1 &kp L2 &kp L3) \
+#define ZMK_UNICODE_SINGLE_M(name, L0, L1, L2, L3) \
+    UC_MACRO(name ## _lower, &kp L0 &kp L1 &kp L2 &kp L3)
+
+#define ZMK_UNICODE_SINGLE_B(name, L0, L1, L2, L3) \
     UC_MODMORPH(name, &name ## _lower, &none)
 
-#define ZMK_UNICODE_PAIR(name, L0, L1, L2, L3, U0, U1, U2, U3) \
+#define ZMK_UNICODE_PAIR_M(name, L0, L1, L2, L3, U0, U1, U2, U3) \
     UC_MACRO(name ## _lower, &kp L0 &kp L1 &kp L2 &kp L3) \
-    UC_MACRO(name ## _upper, &kp U0 &kp U1 &kp U2 &kp U3) \
+    UC_MACRO(name ## _upper, &kp U0 &kp U1 &kp U2 &kp U3)
+
+#define ZMK_UNICODE_PAIR_B(name, L0, L1, L2, L3, U0, U1, U2, U3) \
     UC_MODMORPH(name, &name ## _lower, &name ## _upper)
 
 
 / {
-ZMK_UNICODE_SINGLE(de_sz, N0, N0, D, F)
-//                name     unshifted         shifted
-ZMK_UNICODE_PAIR(euro_sign, N2, N0, A, C,    N0, N0,  N2, N4 )
-ZMK_UNICODE_PAIR( de_ae,   N0, N0,  E, N4,   N0, N0,  C,  N4 )
-ZMK_UNICODE_PAIR( de_oe,   N0, N0,  F, N6,   N0, N0,  D,  N6 )
-ZMK_UNICODE_PAIR( de_ue,   N0, N0,  F,  C,   N0, N0,  D,  C  )
 
     behaviors {
         ht: hold_tap {
@@ -61,7 +55,22 @@ ZMK_UNICODE_PAIR( de_ue,   N0, N0,  F,  C,   N0, N0,  D,  C  )
             quick-tap-ms = <125>;
             bindings = <&kp>, <&kp>;
         };
+        ZMK_UNICODE_SINGLE_B(de_sz, N0, N0, D, F)
+        //                name     unshifted         shifted
+        ZMK_UNICODE_PAIR_B(euro_sign, N2, N0, A, C,    N0, N0,  N2, N4 )
+        ZMK_UNICODE_PAIR_B( de_ae,   N0, N0,  E, N4,   N0, N0,  C,  N4 )
+        ZMK_UNICODE_PAIR_B( de_oe,   N0, N0,  F, N6,   N0, N0,  D,  N6 )
+        ZMK_UNICODE_PAIR_B( de_ue,   N0, N0,  F,  C,   N0, N0,  D,  C  )
     };
+
+	macros {
+        ZMK_UNICODE_SINGLE_M(de_sz, N0, N0, D, F)
+        //                name     unshifted         shifted
+        ZMK_UNICODE_PAIR_M(euro_sign, N2, N0, A, C,    N0, N0,  N2, N4 )
+        ZMK_UNICODE_PAIR_M( de_ae,   N0, N0,  E, N4,   N0, N0,  C,  N4 )
+        ZMK_UNICODE_PAIR_M( de_oe,   N0, N0,  F, N6,   N0, N0,  D,  N6 )
+        ZMK_UNICODE_PAIR_M( de_ue,   N0, N0,  F,  C,   N0, N0,  D,  C  )
+	};
 
     keymap {
         compatible = "zmk,keymap";
