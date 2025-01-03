@@ -7,8 +7,6 @@
 
 / {
     behaviors {
-#include "macros.dtsi"
-
 #define ZMK_HELPER_STRINGIFY(x) #x
 
 #define OS_UNICODE_LEAD &macro_tap &kp LS(LC(U))   // Linux
